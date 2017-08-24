@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-a=tf.constant(5)
+a=tf.constant(8)
 b=tf.constant(2)    
 #with tf.name_scope("Operations"):
 with tf.name_scope("scope_one"):
@@ -29,9 +29,9 @@ with tf.Session() as sess:
 
 import tensorflow as tf
 
-a=tf.constant(5)
+a=tf.constant(6)
 b=tf.constant(2)
-c=tf.constant(3)
+c=tf.constant(5)
 #with tf.name_scope("Operations"):
 with tf.name_scope("scope_one"):
         d=tf.square(a,name= "a_square")
