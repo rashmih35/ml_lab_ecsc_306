@@ -1,0 +1,79 @@
+import tensorflow as tf
+
+x = tf.constant([1.0,3.0,5.0], name='x')
+y = tf.constant([2.0,4.0,6.0], name='y')
+
+model = tf.global_variables_initializer()
+
+
+
+s1=tf.constant(0)
+with tf.name_scope("mean_x"):
+    with tf.Session() as sess:
+        for i in range(len(sess.run(x))):
+            out1 =sess.run(x[i])
+            s1=tf.add(s1,out1)
+        p=tf.divide(s1,len(sess.run(x)))
+        avg_x=sess.run(p)
+print(avg_x)
+
+
+s2=tf.constant(0)
+with tf.name_scope("mean_y"):
+    with tf.Session() as sess:
+        for j in range(len(sess.run(y))):
+            out2 =sess.run(y[j])
+            s2=tf.add(s2,out2)
+        q=tf.divide(s2,len(sess.run(y)))
+        avg_y=sess.run(q)
+print(avg_y)
+
+
+
+#Calculate variance for x
+var=tf.constant(0.0)
+with tf.name_scope("variance"):
+    with tf.Session() as sess:
+        for u in range(len(sess.run(x))):
+            a=tf.subtract(sess.run(x[u]),avg_x)
+            b=tf.square(a)
+            var=tf.add(var,b)
+        variance=sess.run(var)
+print(variance)
+
+
+
+#Calculate covariance of x & y
+s3=tf.constant(0.0)
+with tf.name_scope("covariance"):
+    with tf.Session() as sess:
+        for k in range(len(sess.run(x))):
+            l=tf.subtract(sess.run(x[k]),avg_x)
+            o=tf.subtract(sess.run(y[k]),avg_y)
+            r=tf.multiply(l,o)
+            s3=tf.add(s3,r)
+        covariance=sess.run(s3)
+print(covariance)
+
+
+#value of m
+with tf.name_scope("value_of_m"):
+    with tf.Session() as sess:
+        f=tf.divide(s3,var)
+        slope=sess.run(f)
+print(slope)
+
+
+#value of c
+with tf.name_scope("value_of_c"):
+     with tf.Session() as sess:
+        z=tf.to_float(avg_y)
+        t=tf.multiply(f,avg_x)
+        coef=tf.subtract(z,t)
+        coeff=sess.run(coef)
+print(coeff)
+
+#with tf.Session() as sess:
+   # writer = tf.summary.FileWriter("/tmp/tboard/output", sess.graph)
+   
+  
