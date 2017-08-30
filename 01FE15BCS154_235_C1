@@ -1,0 +1,88 @@
+##read array x and y
+import tensorflow as tf
+with tf.name_scope("array_x"):
+    x = list()
+    n = int(input("Enter input size:"))
+    print("Enter x array elemets:")
+    for i in range(n):
+        x.append(float(input()))
+        
+with tf.name_scope("array_y"):
+    y = list()
+    #n = int(input("Enter input size:"))
+    print("Enter y array elemets:")
+    for i in range(n):
+        y.append(float(input()))        
+
+
+    print(x)
+    print(y)
+    #print(mean_x)
+    #print(sess.run(mean_x))
+    #writer.close()
+    
+    
+    ##mean of x and y
+with tf.name_scope("mean_x"):
+    mean_x = tf.reduce_mean(x)
+with tf.name_scope("mean_x"):
+    mean_y = tf.reduce_mean(y)
+sess = tf.Session()
+    #writer = tf.summary.FileWriter("/tmp/tboard/output12345", sess.graph)
+print(x)
+print(y)
+print("Mean of x:")
+print(sess.run(mean_x))
+print("Mean of y:")
+print(sess.run(mean_y))
+    #writer.close()
+    
+    ## variance of x
+with tf.name_scope("Variance_x"):
+    var_x = tf.constant(0.0)
+    for i in range(n):
+        a = tf.subtract(x[i],mean_x, name="x_minus_mean_of_x")
+        b = tf.square(a, name="square_of_x_minus_mean_of_x")
+        var_x = tf.add(var_x,b, name="variance_of_x")
+    x_var = tf.realdiv(var_x,n,name="var_x")
+#with tf.Session() as sess:
+
+    #writer = tf.summary.FileWriter("/tmp/tboard/output12346", sess.graph)
+print(sess.run(x_var))
+    #writer.close()
+    
+    ##covariance of x,y
+with tf.name_scope("Covariance"):
+    covar_xy = tf.constant(0.0)
+    for i in range(n):
+        a = tf.subtract(x[i],mean_x)
+        b = tf.subtract(y[i],mean_y)
+        c = tf.multiply(a,b)
+        covar_xy = tf.add(covar_xy,c)
+    d = tf.subtract(float(n),1.0)
+    covar_xy = tf.realdiv(covar_xy,d, name="cov_of_xy")
+    
+    print(sess.run(covar_xy))
+
+
+## calculate slope:m
+with tf.name_scope("m"):
+    m = tf.realdiv(covar_xy,x_var)
+    print(sess.run(m))
+    
+    ## calculate c
+with tf.name_scope("c"):
+    mx = tf.multiply(m,mean_x)
+    c = tf.subtract(mean_y,mx, name="constant_c")
+print(sess.run(c))
+
+
+
+
+import matplotlib.pyplot as plt
+#with tf.Session() as sess:
+plt.plot(x,y,"ro")
+plt.show()
+
+plt.plot(x,y)
+plt.show()
